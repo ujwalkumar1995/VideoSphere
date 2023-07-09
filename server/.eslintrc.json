@@ -1,0 +1,42 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+    ],
+    "plugins": ["prettier"],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "linebreak-style": "off",
+		// Configure prettier
+		"prettier/prettier": [
+			"error",
+			{
+				"endOfLine": "auto",
+				"semi": true,
+				"tabWidth": 2,
+				"printWidth": 100,
+				"singleQuote": true,
+				"trailingComma": "all",
+				"bracketSpacing": true
+			}
+			
+		],
+		// Disallow the `any` type.
+		"@typescript-eslint/no-explicit-any": "warn",
+		"@typescript-eslint/ban-types": [
+			"error",
+			{
+				"extendDefaults": true,
+				"types": {
+					"{}": false
+				}
+			}
+		],
+		"object-shorthand": "error",
+		"no-console": "warn"
+    }
+}
