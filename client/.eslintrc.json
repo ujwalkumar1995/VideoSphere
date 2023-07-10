@@ -42,7 +42,7 @@
 		"linebreak-style": "off",
 		// Configure prettier
 		"prettier/prettier": [
-			"error",
+			"warn",
 			{
 				"endOfLine": "auto",
 				"semi": true,
