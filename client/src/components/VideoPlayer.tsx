@@ -1,7 +1,5 @@
 const VideoPlayer = () => {
-    <div>
-        VideoPlayer
-    </div>
-}
+  return <div>VideoPlayer</div>;
+};
 
-export default VideoPlayer
+export default VideoPlayer;

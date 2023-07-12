@@ -1,7 +1,16 @@
-const Options = () => {
-    <div>
-        Options
-    </div>
+import { ReactNode } from 'react';
+
+interface Props {
+  children: ReactNode;
 }
 
-export default Options
+const Options: React.FC<Props> = ({ children }: Props) => {
+  return (
+    <div>
+      Options
+      {children}
+    </div>
+  );
+};
+
+export default Options;
