@@ -90,8 +90,9 @@ const ContextProvider = ({ children }: any) => {
         leaveCall,
         answerCall,
       }}
-      {...children}
-    ></SocketContext.Provider>
+    >
+      {children}
+    </SocketContext.Provider>
   );
 };
 
