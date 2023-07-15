@@ -111,9 +111,8 @@ const Options: React.FC<Props> = ({ children }: Props) => {
             </Grid>
           </Grid>
         </form>
+        {children}
       </Paper>
-      Options
-      {children}
     </Container>
   );
 };
