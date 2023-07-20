@@ -55,10 +55,24 @@ const VideoGrid = () => {
   }, []);
 
   return (
-    <div id='video-grid'>
-      <video ref={myVideo} autoPlay></video>
-      <video ref={anotherUser} autoPlay></video>
-    </div>
+    <>
+      <div className='main'>
+        <div className='main-left'>
+          <div className='main-videos'>
+            <div id='video-grid'>
+              <video ref={myVideo} autoPlay></video>
+              {anotherUser.current && <video ref={anotherUser} autoPlay></video>}
+            </div>
+          </div>
+          <div className='main-controls'></div>
+        </div>
+        <div className='main-right'>
+          <div className='main-header'>
+            <h6>Chat</h6>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

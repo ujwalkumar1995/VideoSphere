@@ -1,5 +1,4 @@
 import VideoGrid from './components/VideoGrid';
-import './styles/App.css';
 import Home from './pages/Home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 

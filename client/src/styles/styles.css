@@ -1,3 +1,8 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+
 #video-grid {
     display: flex;
     justify-content: center;
@@ -7,4 +12,27 @@ video {
     height: 20rem;
     width: 40 rem;
     object-fit: cover;
+}
+
+.main {
+    height: 100vh;
+    display: flex;
+}
+
+.main-left {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-right {
+    flex: 0.2
+}
+
+.main-videos {
+    flex-grow: 1;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
