@@ -3,6 +3,7 @@ import '../styles/styles.css';
 import { io } from 'socket.io-client';
 import Peer, { MediaConnection } from 'peerjs';
 import { useParams } from 'react-router-dom';
+import { FaComment, FaMicrophone, FaShieldAlt, FaUserFriends, FaVideo } from 'react-icons/fa';
 
 const socket = io('http://localhost:5000');
 
@@ -64,7 +65,37 @@ const VideoGrid = () => {
               {anotherUser.current && <video ref={anotherUser} autoPlay></video>}
             </div>
           </div>
-          <div className='main-controls'></div>
+          <div className='main-controls'>
+            <div className='main-controls-block'>
+              <div className='main-controls-button'>
+                <span>Mute</span>
+                <FaMicrophone />
+              </div>
+              <div className='main-controls-button'>
+                <span>Stop Video</span>
+                <FaVideo />
+              </div>
+            </div>
+            <div className='main-controls-block'>
+              <div className='main-controls-button'>
+                <span>Security</span>
+                <FaShieldAlt />
+              </div>
+              <div className='main-controls-button'>
+                <span>Participant</span>
+                <FaUserFriends />
+              </div>
+              <div className='main-controls-button'>
+                <span>Chat</span>
+                <FaComment />
+              </div>
+            </div>
+            <div className='main-controls-block'>
+              <div className='main-controls-button'>
+                <span className='leave-meeting'>Leave Meeting</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div className='main-right'>
           <div className='main-header'>
