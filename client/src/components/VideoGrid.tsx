@@ -101,6 +101,12 @@ const VideoGrid = () => {
           <div className='main-header'>
             <h6>Chat</h6>
           </div>
+          <div className='main-chat-window'>
+            <ul className='messages'></ul>
+          </div>
+          <div className='main-message-container'>
+            <input id='chat_message' placeholder='Type message here...' type='text'></input>
+          </div>
         </div>
       </div>
     </>
