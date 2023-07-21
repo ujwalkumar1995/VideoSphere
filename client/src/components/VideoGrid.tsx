@@ -11,7 +11,7 @@ const VideoGrid = () => {
   const myVideo = useRef<any>();
   const anotherUser = useRef<any>();
   const [videoStream, setVideoStream] = useState<any>(undefined);
-
+  const [message, setMessage] = useState<string>('');
   const { roomId } = useParams();
   const peer = new Peer('', {
     path: '/peerjs',
@@ -55,6 +55,17 @@ const VideoGrid = () => {
     };
   }, []);
 
+  const sendMessage = (event: any) => {
+    if (event.which == 13 && message.trim().length != 0) {
+      socket.emit('message', message);
+      setMessage('');
+    }
+  };
+
+  socket.on('createMessage', (message) => {
+    console.log('server', message);
+  });
+
   return (
     <>
       <div className='main'>
@@ -62,7 +73,7 @@ const VideoGrid = () => {
           <div className='main-videos'>
             <div id='video-grid'>
               <video ref={myVideo} autoPlay></video>
-              {anotherUser.current && <video ref={anotherUser} autoPlay></video>}
+              <video ref={anotherUser} autoPlay></video>
             </div>
           </div>
           <div className='main-controls'>
@@ -105,7 +116,14 @@ const VideoGrid = () => {
             <ul className='messages'></ul>
           </div>
           <div className='main-message-container'>
-            <input id='chat_message' placeholder='Type message here...' type='text'></input>
+            <input
+              id='chat_message'
+              placeholder='Type message here...'
+              type='text'
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              onKeyDown={sendMessage}
+            ></input>
           </div>
         </div>
       </div>

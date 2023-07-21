@@ -28,7 +28,7 @@
         "react/react-in-jsx-scope": "off",
 		// Configure prettier
 		"prettier/prettier": [
-			"error",
+			"warn",
 			{
 				"endOfLine": "auto",
 				"semi": true,
