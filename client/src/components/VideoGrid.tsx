@@ -12,8 +12,8 @@ const VideoGrid = () => {
   // const [myPeer, setMyPeer] = useState<undefined | Peer>(undefined);
   // const [message, setMessage] = useState<string>('');
   const { roomId } = useParams();
+  let peer: Peer;
   useEffect(() => {
-    let peer: Peer;
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
       peer = new Peer('', {
         path: '/peerjs',
@@ -34,16 +34,17 @@ const VideoGrid = () => {
         connectToNewUser(userId, stream);
       });
     });
-    const connectToNewUser = (userId: string, stream: MediaStream) => {
-      const call = peer.call(userId, stream);
-      call?.on('stream', (userVideoStream: MediaStream) => {
-        addVideoStream(userVideoStream, anotherUser);
-      });
-      call?.on('close', () => {
-        anotherUser.current.srcObject = null;
-      });
-    };
   }, []);
+
+  const connectToNewUser = (userId: string, stream: MediaStream) => {
+    const call = peer.call(userId, stream);
+    call?.on('stream', (userVideoStream: MediaStream) => {
+      addVideoStream(userVideoStream, anotherUser);
+    });
+    call?.on('close', () => {
+      anotherUser.current.srcObject = null;
+    });
+  };
 
   const addVideoStream = (stream: MediaStream, videoRef: any) => {
     if (videoRef.current) {

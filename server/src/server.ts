@@ -24,19 +24,26 @@ app.get('/', (_req: Request, res: Response) => {
   res.redirect(`/${uuuidv4()}`);
 });
 
-app.get('/room', (req: Request, res: Response) => {
+app.get('/:room', (req: Request, res: Response) => {
   res.json({ id: uuuidv4() });
 });
 
+// io.on('connection', (socket) => {
+//   socket.on('join-room', (roomId: string, userId: string) => {
+//     socket.on('message', (message) => {
+//       socket.to(roomId).emit('createMessage', message);
+//     });
+//     socket.on('ready', () => {
+//       socket.join(roomId);
+//       socket.to(roomId).emit('user-connected', userId);
+//     });
+//   });
+// });
+
 io.on('connection', (socket) => {
   socket.on('join-room', (roomId: string, userId: string) => {
-    socket.on('message', (message) => {
-      socket.to(roomId).emit('createMessage', message);
-    });
-    socket.on('ready', () => {
-      socket.join(roomId);
-      socket.to(roomId).emit('user-connected', userId);
-    });
+    socket.join(roomId);
+    socket.broadcast.to(roomId).emit('user-connected', userId);
   });
 });
 
