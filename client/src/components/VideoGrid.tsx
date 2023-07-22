@@ -1,70 +1,70 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import '../styles/styles.css';
 import { io } from 'socket.io-client';
 import Peer, { MediaConnection } from 'peerjs';
 import { useParams } from 'react-router-dom';
 import { FaComment, FaMicrophone, FaShieldAlt, FaUserFriends, FaVideo } from 'react-icons/fa';
 
-const socket = io('http://localhost:5000');
-
 const VideoGrid = () => {
+  const socket = io('http://localhost:5000');
   const myVideo = useRef<any>();
   const anotherUser = useRef<any>();
-  const [videoStream, setVideoStream] = useState<any>(undefined);
-  const [message, setMessage] = useState<string>('');
+  // const [myPeer, setMyPeer] = useState<undefined | Peer>(undefined);
+  // const [message, setMessage] = useState<string>('');
   const { roomId } = useParams();
-  const peer = new Peer('', {
-    path: '/peerjs',
-    host: '/',
-    port: 5000,
-  });
   useEffect(() => {
+    let peer: Peer;
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-      setVideoStream(stream);
+      peer = new Peer('', {
+        path: '/peerjs',
+        host: '/',
+        port: 5000,
+      });
+      peer.on('open', (id: string) => {
+        socket.emit('join-room', roomId, id);
+      });
       addVideoStream(stream, myVideo);
       peer.on('call', (call: MediaConnection) => {
-        call.answer(videoStream);
-        call.on('stream', (userVideoStream) => {
+        call.answer(stream);
+        call?.on('stream', (userVideoStream: MediaStream) => {
           addVideoStream(userVideoStream, anotherUser);
         });
       });
-      socket.emit('ready');
       socket.on('user-connected', (userId) => {
         connectToNewUser(userId, stream);
       });
     });
-
-    peer.on('open', (id: string) => {
-      socket.emit('join-room', roomId, id);
-    });
-    const connectToNewUser = (userId: string, stream: any) => {
+    const connectToNewUser = (userId: string, stream: MediaStream) => {
       const call = peer.call(userId, stream);
-      call.on('stream', (userVideoStream) => {
+      call?.on('stream', (userVideoStream: MediaStream) => {
         addVideoStream(userVideoStream, anotherUser);
       });
-    };
-
-    const addVideoStream = (stream: any, videoRef: any) => {
-      if (videoRef.current) {
-        videoRef.current.muted = true;
-        videoRef.current.srcObject = stream;
-        videoRef.current.addEventListener('loadmetadata', () => {
-          videoRef.current.play();
-        });
-      }
+      call?.on('close', () => {
+        anotherUser.current.srcObject = null;
+      });
     };
   }, []);
 
-  const sendMessage = (event: any) => {
-    if (event.which == 13 && message.trim().length != 0) {
-      socket.emit('message', message);
-      setMessage('');
+  const addVideoStream = (stream: MediaStream, videoRef: any) => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.srcObject = stream;
+      videoRef.current.addEventListener('loadmetadata', () => {
+        videoRef.current.play();
+      });
     }
   };
 
-  socket.on('createMessage', (message) => {
-    console.log('server', message);
-  });
+  // const sendMessage = (event: any) => {
+  //   if (event.which == 13 && message.trim().length != 0) {
+  //     socket.emit('message', message);
+  //     setMessage('');
+  //   }
+  // };
+
+  // socket.on('createMessage', (message) => {
+  //   console.log('server', message);
+  // });
 
   return (
     <>
@@ -108,7 +108,7 @@ const VideoGrid = () => {
             </div>
           </div>
         </div>
-        <div className='main-right'>
+        {/* <div className='main-right'>
           <div className='main-header'>
             <h6>Chat</h6>
           </div>
@@ -125,7 +125,7 @@ const VideoGrid = () => {
               onKeyDown={sendMessage}
             ></input>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
