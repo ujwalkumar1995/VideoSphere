@@ -1,9 +1,12 @@
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
-import * as http from 'http';
+import http from 'http';
+import { roomHandler } from './room/handler';
 import { Server } from 'socket.io';
 import { v4 as uuuidv4 } from 'uuid';
-import { ExpressPeerServer } from 'peer';
+import { PeerServer } from 'peer';
+
+PeerServer({ port: 9000, path: '/' });
 
 const app: Express = express();
 const server = http.createServer(app);
@@ -14,8 +17,6 @@ const io = new Server(server, {
   },
 });
 
-const peerServer = ExpressPeerServer(server);
-app.use('/peerjs', peerServer);
 app.use(cors());
 
 const PORT = process.env.PORT || 5000;
@@ -28,23 +29,12 @@ app.get('/:room', (req: Request, res: Response) => {
   res.json({ id: uuuidv4() });
 });
 
-// io.on('connection', (socket) => {
-//   socket.on('join-room', (roomId: string, userId: string) => {
-//     socket.on('message', (message) => {
-//       socket.to(roomId).emit('createMessage', message);
-//     });
-//     socket.on('ready', () => {
-//       socket.join(roomId);
-//       socket.to(roomId).emit('user-connected', userId);
-//     });
-//   });
-// });
-
 io.on('connection', (socket) => {
-  socket.on('join-room', (roomId: string, userId: string) => {
-    socket.join(roomId);
-    socket.broadcast.to(roomId).emit('user-connected', userId);
+  console.log('user is connected');
+  socket.on('disconnect', () => {
+    console.log('user is disconneted');
   });
+  roomHandler(socket);
 });
 
 server.listen(PORT, () => {
