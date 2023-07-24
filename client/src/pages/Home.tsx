@@ -1,4 +1,3 @@
-import { Button } from '@material-ui/core';
 import { RoomContext } from '../contexts/RoomContext';
 import { useContext } from 'react';
 
@@ -9,7 +8,7 @@ const Home = () => {
     socket.emit('create-room');
   };
 
-  return <Button onClick={startCall}>Start a Call</Button>;
+  return <button onClick={startCall}>Start a Call</button>;
 };
 
 export default Home;

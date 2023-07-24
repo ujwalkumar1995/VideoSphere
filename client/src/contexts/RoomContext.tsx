@@ -8,7 +8,7 @@ import { peersReducer } from '../reducers/peerReducers';
 import { addPeerAction, removePeerAction } from '../reducers/peerActions';
 
 const serverURL = 'http://localhost:5000';
-export const RoomContext = createContext<null | any>(null);
+export const RoomContext = createContext<any>(null);
 const socket = SocketIO(serverURL);
 
 export const RoomProvider = ({ children }: any) => {

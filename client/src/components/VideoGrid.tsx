@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import { RoomContext } from '../contexts/RoomContext';
 import { Video } from './Video';
+import { PeerState } from '../reducers/peerReducers';
 
 const VideoGrid = () => {
   const { socket, me, stream, peers } = useContext(RoomContext);
@@ -16,7 +17,7 @@ const VideoGrid = () => {
   return (
     <>
       <Video stream={stream} muted={true}></Video>
-      {Object.values(peers).map((peer: any, index: number) => {
+      {Object.values(peers as PeerState).map((peer: { stream: MediaStream }, index: number) => {
         return <Video key={index} muted={false} stream={peer.stream}></Video>;
       })}
     </>
