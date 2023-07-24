@@ -8,7 +8,6 @@ export const roomHandler = (socket: Socket) => {
     if (rooms[roomId]) {
       rooms[roomId].push(peerId);
       socket.join(roomId);
-      console.log(peerId);
       socket.to(roomId).emit('user-joined', { peerId });
       socket.emit('get-users', {
         roomId,

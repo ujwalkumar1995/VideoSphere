@@ -1,7 +1,9 @@
-import express, { Express, Request, Response } from 'express';
-import * as http from 'http';
-import { Server } from 'socket.io';
 import cors from 'cors';
+import express, { Express, Request, Response } from 'express';
+import http from 'http';
+import { roomHandler } from './room/handler';
+import { Server } from 'socket.io';
+import { v4 as uuuidv4 } from 'uuid';
 
 const app: Express = express();
 const server = http.createServer(app);
@@ -16,24 +18,16 @@ app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Server is running');
+app.get('/:room', (req: Request, res: Response) => {
+  res.json({ id: uuuidv4() });
 });
 
 io.on('connection', (socket) => {
-  socket.emit('me', socket.id);
-
+  console.log('user is connected');
   socket.on('disconnect', () => {
-    socket.broadcast.emit('callended');
+    console.log('user is disconneted');
   });
-
-  socket.on('calluser', ({ userToCall, signalData, from, name }) => {
-    io.to(userToCall).emit('calluser', { signal: signalData, from, name });
-  });
-
-  socket.on('answercall', (data) => {
-    io.to(data.to).emit('callaccepted', data.signal);
-  });
+  roomHandler(socket);
 });
 
 server.listen(PORT, () => {

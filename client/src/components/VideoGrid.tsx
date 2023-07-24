@@ -6,19 +6,18 @@ import { RoomContext } from '../contexts/RoomContext';
 import { Video } from './Video';
 
 const VideoGrid = () => {
-  const { ws, me, stream, peers } = useContext(RoomContext);
-  console.log('PEERS',peers);
+  const { socket, me, stream, peers } = useContext(RoomContext);
   const { roomId } = useParams();
   useEffect(() => {
     if (me) {
-      ws.emit('join-room', { roomId, peerId: me._id });
+      socket.emit('join-room', { roomId, peerId: me._id });
     }
-  }, [roomId, me, ws]);
+  }, [roomId, me, socket]);
   return (
     <>
-      <Video stream={stream}></Video>
+      <Video stream={stream} muted={true}></Video>
       {Object.values(peers).map((peer: any, index: number) => {
-        return <Video key={index} stream={peer.stream}></Video>;
+        return <Video key={index} muted={false} stream={peer.stream}></Video>;
       })}
     </>
   );

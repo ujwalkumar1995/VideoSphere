@@ -9,7 +9,7 @@ import { addPeerAction, removePeerAction } from '../reducers/peerActions';
 
 const serverURL = 'http://localhost:5000';
 export const RoomContext = createContext<null | any>(null);
-const ws = SocketIO(serverURL);
+const socket = SocketIO(serverURL);
 
 export const RoomProvider = ({ children }: any) => {
   const navigate = useNavigate();
@@ -25,20 +25,19 @@ export const RoomProvider = ({ children }: any) => {
           host: 'localhost',
           path: '/',
         });
-        console.log('PEER', peer);
         setMe(peer);
         setStream(stream);
       });
     } catch (error) {
       console.log(error);
     }
-    ws.on('room-created', ({ roomId }) => {
+    socket.on('room-created', ({ roomId }) => {
       navigate(`/room/${roomId}`);
     });
-    ws.on('get-users', ({ participants }) => {
+    socket.on('get-users', ({ participants }) => {
       console.log('Participants', participants);
     });
-    ws.on('user-disconnected', (peerId) => {
+    socket.on('user-disconnected', (peerId) => {
       dispatch(removePeerAction(peerId));
     });
   }, []);
@@ -47,9 +46,8 @@ export const RoomProvider = ({ children }: any) => {
     if (!me || !stream) {
       return;
     }
-    ws.on('user-joined', ({ peerId }) => {
+    socket.on('user-joined', ({ peerId }) => {
       const call = me.call(peerId, stream);
-      console.log('called', call);
       call.on('stream', (peerStream) => {
         dispatch(addPeerAction(peerId, peerStream));
       });
@@ -63,7 +61,7 @@ export const RoomProvider = ({ children }: any) => {
     });
   }, [me, stream]);
 
-  console.log({ peers });
-
-  return <RoomContext.Provider value={{ ws, me, stream, peers }}>{children}</RoomContext.Provider>;
+  return (
+    <RoomContext.Provider value={{ socket, me, stream, peers }}>{children}</RoomContext.Provider>
+  );
 };

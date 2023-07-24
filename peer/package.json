@@ -7,7 +7,6 @@
     "build": "npx tsc",
     "start": "node dist/index.ts",
     "dev": "nodemon src/index.ts",
-    "dev-v1": "nodemon src/server.ts",
     "lint": "eslint src/**/*.ts --cache --max-warnings=0",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
