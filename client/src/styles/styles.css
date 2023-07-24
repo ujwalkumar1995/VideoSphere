@@ -9,8 +9,8 @@ body{
 }
 
 video {
-    height: 20rem;
-    width: 40 rem;
+    height: 25rem;
+    width: 30rem;
     object-fit: cover;
 }
 
@@ -20,7 +20,7 @@ video {
 }
 
 .main-left {
-    flex: 1;
+    flex: 0.8;
     display: flex;
     flex-direction: column;
 }

@@ -1,7 +1,11 @@
 import { Socket } from 'socket.io';
 import { v4 as uuuidv4 } from 'uuid';
 
-const rooms: any = {};
+const rooms: Record<string, string[]> = {};
+interface Room {
+  roomId: string;
+  peerId: string;
+}
 
 export const roomHandler = (socket: Socket) => {
   socket.on('join-room', ({ roomId, peerId }) => {
@@ -20,8 +24,8 @@ export const roomHandler = (socket: Socket) => {
     });
   });
 
-  const leaveRoom = ({ roomId, peerId }: any) => {
-    rooms[roomId] = rooms[roomId].filter((id: any) => id !== peerId);
+  const leaveRoom = ({ roomId, peerId }: Room) => {
+    rooms[roomId] = rooms[roomId].filter((id: string) => id !== peerId);
     socket.to(roomId).emit('user-disconnected', peerId);
   };
 

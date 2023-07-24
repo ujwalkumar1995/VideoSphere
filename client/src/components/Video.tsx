@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-export const Video = ({ stream, muted }: { stream: MediaStream, muted: boolean }) => {
+export const Video = ({ stream, muted }: { stream: MediaStream; muted: boolean }) => {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     if (ref.current) {
