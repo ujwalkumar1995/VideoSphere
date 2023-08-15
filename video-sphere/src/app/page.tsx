@@ -2,11 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FaKeyboard, FaVideo } from "react-icons/fa";
 import homeImage from '../../public/home-image.jpg'
+import AuthModal from '@/components/AuthModal';
 
 export default function Home() {
   return (
-    <main className="flex items-left w-screen h-full min-h-full full-screen-div py-10 px-16">
-      <div className='w-[47%] px-5'> 
+    <main className="flex items-left w-screen h-full min-h-full py-10 px-16">
+      <div className='w-[47%] px-5'>
         <div className='border-b py-12'>
           <div className='text-5xl bold'>
             Video call and meeting facility for all.
@@ -16,7 +17,7 @@ export default function Home() {
           </div>
           <div className='py-3 flex justify-start'>
             <div className='pt-2 bg-blue-400 hover:bg-blue-700 p-2 rounded text-white'>
-              <Link className='flex' href=''>
+              <Link className='flex' href='/login'>
                 <div className='pt-1'>
                   <FaVideo />
                 </div>
@@ -42,7 +43,7 @@ export default function Home() {
         </div>
         <div className='border-b py-12'>
           <div>
-            Don't have an account? <Link className='text-blue-500' href=''>Create account now</Link>
+            Don't have an account? <Link className='text-blue-500' href='/signin'>Create account now</Link>
           </div>
         </div>
       </div>
@@ -53,7 +54,7 @@ export default function Home() {
             Get a link that you can share
           </div>
           <div className='text-reg text-gray-500'>
-            Click a link that you can share with people that you want to connect with
+            Create a link that you can share with people that you want to connect with.
           </div>
         </div>
       </div>
